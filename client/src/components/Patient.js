@@ -5,7 +5,7 @@ import getWeb3 from '../getWeb3';
 import DisplayFiles from "./common/display_file";
 import DisplayConsultation from "./common/displayConsultation";
 import './css/patient.css'
-
+import {Buffer} from 'buffer'
 import ipfs from "./ipfs-util"
 
 
