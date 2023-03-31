@@ -1,13 +1,16 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
+import axios from 'axios';
+
 import {
   FacebookLoginButton,
   InstagramLoginButton
 } from "react-social-login-buttons";
 
 class SignInForm extends Component {
-  constructor() {
-    super();
+  navigate = useNavigate();
+  constructor(props) {
+    super(props);
 
     this.state = {
       email: "",
@@ -28,9 +31,16 @@ class SignInForm extends Component {
     });
   }
 
-  handleSubmit(event) {
+  async handleSubmit(event) {
     event.preventDefault();
-
+    try{
+      const loginUser = this.state
+      const loginResponse = await axios.post("http://localhost:4040/api/auth/login", loginUser);
+      localStorage.setItem("auth-token", loginResponse.data.token);
+      this.navigate('/')
+      } catch(err) {
+      console.log(err)
+      }
     console.log("The form was submitted with the following data:");
     console.log(this.state);
   }

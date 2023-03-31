@@ -24,13 +24,15 @@ import Hospital from "./components/Hospital";
 import Owner from "./components/Owner";
 import SignUpForm from "./components/SignUpForm"
 import SignInForm from './components/SignInForm';
+import axios from 'axios';
 import "./App.css";
 import "./components/css/antd.css"
 import 'antd/dist/antd.css';
 
 const App = () => {
   const [state,setState] = useState({  web3: null, accounts: null, contract: [],loggedAcc:null,loggedas:null});
-  const [currentUser,setCurrentUser] = useState({user : null })
+  const [currentUser,setCurrentUser] = useState({user : null,token: null })
+  const navigate = useNavigate();
   useEffect( () => async function(){
     try {
       var web3 = await getWeb3();
@@ -62,9 +64,27 @@ const App = () => {
         `Failed to load web3, accounts, or contract. Check console for details.`,
       );
     }
-  });
-  const handleChange = (user) => {
-    setCurrentUser({user: user});
+    const checkLoggedIn = async () => {
+      let token = localStorage.getItem("auth-token");
+      if(token === null){
+      localStorage.setItem("auth-token", "");
+      token = "";
+      }
+      const tokenResponse = await axios.post('http://localhost:4040/api/users/tokenIsValid', null, {headers: { Authorization: `Bearer ${token}`}});
+      if (tokenResponse.data) {
+      const userRes = await axios.get("http://localhost:4040/api/users/userInfo", {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setCurrentUser({
+      user: userRes.data,
+      token
+      });
+      }
+      }
+      checkLoggedIn();
+  },[]);
+  const handleChange = (data) => {
+    setCurrentUser({user: data.user,token: data.token});
   }
   console.log(state.loggedas);   //uncomment to check if components are loaded
   console.log(state.accounts)
@@ -72,11 +92,9 @@ const App = () => {
     return <div>Loading Web3, accounts, and contract...</div>;
   }
   if(!currentUser.user &&state.web3)
-  { console.log('sahi hai')
+  { 
     return (
       
-      <Router basename="/">
-
         <div className="App">
           <div className="appAside" />
           <div className="appForm">
@@ -116,18 +134,17 @@ const App = () => {
             </div>
             <Routes>
             <Route exact path="/" element={<SignUpForm user={currentUser.user} onUserSubmit= {handleChange}/> } />
-            <Route path="/sign-in" element={<SignInForm/>} />
+            <Route path="/sign-in" element={<SignInForm user={currentUser.user} onUserSubmit= {handleChange}/>}/>
             </Routes>
           </div>
         </div>
-      </Router>
+    
     );
   }
   
   return (
       
         
-    <Router>
       <Sidebar>
         <Routes>
           <Route path="/" exact element={<BookAppointment />} />
@@ -146,7 +163,6 @@ const App = () => {
           
         </Routes>
       </Sidebar>
-    </Router>
     
     // <BMICalculator />
     // <BookAppointment />
