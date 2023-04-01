@@ -8,7 +8,6 @@ import {
 } from "react-social-login-buttons";
 
 class SignInForm extends Component {
-  navigate = useNavigate();
   constructor(props) {
     super(props);
 
@@ -37,7 +36,7 @@ class SignInForm extends Component {
       const loginUser = this.state
       const loginResponse = await axios.post("http://localhost:4040/api/auth/login", loginUser);
       localStorage.setItem("auth-token", loginResponse.data.token);
-      this.navigate('/')
+      this.props.onUserSubmit(loginResponse.data)
       } catch(err) {
       console.log(err)
       }

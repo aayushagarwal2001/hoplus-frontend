@@ -25,6 +25,10 @@ import Owner from "./components/Owner";
 import SignUpForm from "./components/SignUpForm"
 import SignInForm from './components/SignInForm';
 import axios from 'axios';
+import Button from 'react-bootstrap/Button';
+import Nav from 'react-bootstrap/Nav';
+import Navbar from 'react-bootstrap/Navbar';
+import Widget from 'rasa-webchat';
 import "./App.css";
 import "./components/css/antd.css"
 import 'antd/dist/antd.css';
@@ -64,27 +68,45 @@ const App = () => {
         `Failed to load web3, accounts, or contract. Check console for details.`,
       );
     }
-    const checkLoggedIn = async () => {
+  
       let token = localStorage.getItem("auth-token");
       if(token === null){
       localStorage.setItem("auth-token", "");
       token = "";
       }
-      const tokenResponse = await axios.post('http://localhost:4040/api/users/tokenIsValid', null, {headers: { Authorization: `Bearer ${token}`}});
+      const tokenResponse = await axios.post('http://localhost:4040/api/users/tokenIsValid',null,{headers: { Authorization: `Bearer ${token}`}});
       if (tokenResponse.data) {
       const userRes = await axios.get("http://localhost:4040/api/users/userInfo", {
         headers: { Authorization: `Bearer ${token}` }
       });
+      console.log(userRes)
       setCurrentUser({
       user: userRes.data,
-      token
+      token: token
       });
+      
       }
-      }
-      checkLoggedIn();
+      
+      
   },[]);
   const handleChange = (data) => {
     setCurrentUser({user: data.user,token: data.token});
+    if( data.user && data.user.role == "patient")
+      {
+    let elem = document.getElementById("rasaWebchatPro");
+    elem.style.display = 'block'
+      }
+    navigate('/')
+
+  }
+
+  const onlogOut = function(){
+    localStorage.setItem("auth-token", null);
+    console.log(currentUser)
+    if(currentUser.user.role == "patient"){ let elem = document.getElementById("rasaWebchatPro");
+    elem.style.display = 'none'}
+    setCurrentUser({user: null,token: null});
+    navigate('/')
   }
   console.log(state.loggedas);   //uncomment to check if components are loaded
   console.log(state.accounts)
@@ -143,8 +165,18 @@ const App = () => {
   }
   
   return (
-      
+      <>
+       
+      <Navbar  variant="dark"  style={{paddingLeft:"1vw",backgroundColor:"rgb(41 75 107)"}}>
         
+          <Navbar.Brand href="#home">Sanatorium</Navbar.Brand>
+          <Nav className="justify-content-end">
+          <Button variant="danger" onClick={onlogOut}>Logout</Button>{' '}
+          </Nav>
+      </Navbar>
+      
+      
+    
       <Sidebar>
         <Routes>
           <Route path="/" exact element={<BookAppointment />} />
@@ -163,7 +195,7 @@ const App = () => {
           
         </Routes>
       </Sidebar>
-    
+    </>
     // <BMICalculator />
     // <BookAppointment />
     // <ProcessFaceRecognition />
