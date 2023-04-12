@@ -47,6 +47,21 @@ const Sidebar = ({ children }) => {
         //     icon: <FaCommentAlt />
         // },
         {
+            path: "/doctorBlockChainAccess",
+            name: "Electronic Health Records",
+            icon: <FaCommentAlt />
+        },
+        {
+            path: "/adminClinicBlockChainAccess",
+            name: "Electronic Health Records",
+            icon: <FaCommentAlt />
+        },
+        {
+            path: "/adminBlockChainAccess",
+            name: "Electronic Health Records",
+            icon: <FaCommentAlt />
+        },
+        {
             path: "/patientBlockChainAccess",
             name: "Electronic Health Records",
             icon: <FaCommentAlt />
@@ -80,7 +95,7 @@ const Sidebar = ({ children }) => {
     ]
     return (
         <div className="container-fluid" style={{margin:'0px',display:'flex',padding:'0px',height: 'auto', minHeight:'100vh'}}>
-            <div style={{ width: isOpen ? "200px" : "50px",height : 'inherit' }} className="sidebar">
+            <div style={{ width: isOpen ? "auto" : "50px",height : 'inherit' }} className="sidebar">
                 <div className="top_section">
                     <h1 style={{ display: isOpen ? "block" : "none" }} className="logo">HopPlus</h1>
                     <div style={{ marginLeft: isOpen ? "50px" : "0px" }} className="bars">

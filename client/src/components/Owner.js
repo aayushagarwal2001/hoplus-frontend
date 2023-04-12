@@ -64,7 +64,7 @@ class Owner extends Component {
 
   render() {
     return (
-      <div className="container">
+      <div className="container-fluid">
         <div className="row mt-2">
           <div className="col mt-2" style={{ border: "2px solid black" }}>
             <h4 style={{ align: "centre" }}>Create Clinic</h4>

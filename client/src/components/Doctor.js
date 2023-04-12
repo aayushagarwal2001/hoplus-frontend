@@ -60,7 +60,7 @@ class Doctor extends Component {
                         </ul>
                 </div>
                 
-                <div className='container'>
+                <div className='container-fluid'>
                     <div className='row mt-3'>
                     <div className='col'>
                         {

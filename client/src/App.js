@@ -1,4 +1,4 @@
-import React, { useEffect, useState ,Component} from 'react'
+import React, { useEffect, useState ,Component, createElement} from 'react'
 import './App.css';
 import { BrowserRouter as Router, Route, Routes ,NavLink,useNavigate} from 'react-router-dom';
 import BookAppointment from './components/BookAppointment';
@@ -19,7 +19,6 @@ import docAddRecord from "./contracts/DoctorAddRecord.json"
 import getWeb3 from "./getWeb3";
 import DocLogin from "./components/DocLogin";
 import Doctor from "./components/Doctor";
-import NavbarComp from "./components/NavbarComp";
 import Hospital from "./components/Hospital";
 import Owner from "./components/Owner";
 import SignUpForm from "./components/SignUpForm"
@@ -74,9 +73,10 @@ const App = () => {
       localStorage.setItem("auth-token", "");
       token = "";
       }
+      let userRes;
       const tokenResponse = await axios.post('http://localhost:4040/api/users/tokenIsValid',null,{headers: { Authorization: `Bearer ${token}`}});
       if (tokenResponse.data) {
-      const userRes = await axios.get("http://localhost:4040/api/users/userInfo", {
+      userRes = await axios.get("http://localhost:4040/api/users/userInfo", {
         headers: { Authorization: `Bearer ${token}` }
       });
       console.log(userRes)
@@ -86,16 +86,36 @@ const App = () => {
       });
       
       }
-      
+      if(userRes.data.role == 'patient'){
+      let widget = document.createElement("div");
+      widget.setAttribute("data-websocket-url","http://localhost:5050");
+      widget.setAttribute("data-token",token);
+      let authToken = "/set_data{\"token\":"+"\"Bearer "+token+"\"}";
+      console.log(authToken);
+      widget.setAttribute("data-initial-payload",authToken);
+      widget.id = "rasa-chat-widget" 
+      let s = document.createElement("script");
+      s.setAttribute("src","https://unpkg.com/@rasahq/rasa-chat");
+      s.setAttribute("type","application/javascript");
+      document.body.appendChild(widget);
+      document.body.appendChild(s);
+      }
+//       <div id="rasa-chat-widget" data-websocket-url="http://localhost:5050" data-default-open	
+// ="true"  ></div>
+//   <script src="https://unpkg.com/@rasahq/rasa-chat" type="application/javascript"></script>
+     
+        
+    
       
   },[]);
   const handleChange = (data) => {
     setCurrentUser({user: data.user,token: data.token});
-    if( data.user && data.user.role == "patient")
-      {
-    let elem = document.getElementById("rasaWebchatPro");
-    elem.style.display = 'block'
-      }
+    // if( data.user && data.user.role == "patient")
+    //   {
+    // let elem = document.getElementById("rasaWebchatPro");
+    // elem.style.display = 'block'
+   
+    //   }
     navigate('/')
 
   }
@@ -103,8 +123,8 @@ const App = () => {
   const onlogOut = function(){
     localStorage.setItem("auth-token", null);
     console.log(currentUser)
-    if(currentUser.user.role == "patient"){ let elem = document.getElementById("rasaWebchatPro");
-    elem.style.display = 'none'}
+    // if(currentUser.user.role == "patient"){ let elem = document.getElementById("rasaWebchatPro");
+    // elem.style.display = 'none'}
     setCurrentUser({user: null,token: null});
     navigate('/')
   }
@@ -166,7 +186,7 @@ const App = () => {
   
   return (
       <>
-       
+      
       <Navbar  variant="dark"  style={{paddingLeft:"1vw",backgroundColor:"rgb(41 75 107)"}}>
         
           <Navbar.Brand href="#home">Sanatorium</Navbar.Brand>
@@ -192,7 +212,10 @@ const App = () => {
           <Route path="/adminadddoctorfees" element={<AdminAddDoctorFees />} />
           <Route path="/adminaddnewdoctor" element={<AdminAddNewDoctor />} />
           <Route path="/patientBlockChainAccess" element={<Patient contract={state.contract} Acc={state.accounts}/>}/>
-          
+          <Route path="/adminBlockChainAccess"   element={<Owner contract={state.contract} Acc={state.accounts}/>}/>
+          <Route path="/adminClinicBlockChainAccess"   element={<Hospital contract={state.contract} Acc={state.accounts}/>}/>
+          <Route path="/doctorBlockChainAccess"   element={<Doctor contract={state.contract} Acc={state.accounts}/>}/>
+
         </Routes>
       </Sidebar>
     </>

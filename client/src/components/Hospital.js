@@ -72,7 +72,7 @@ class Hospital extends Component{
         let {hosp_name, hosp_id, hosp_location} = this.state;
  
         return(
-            <div className='container'> 
+            <div className='container-fluid'> 
                 <Card>
                     <div >
                         <span><b>Id: </b>{hosp_id}</span> <br></br>

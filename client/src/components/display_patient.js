@@ -176,36 +176,7 @@ class DisplayPatient extends Component {
     showFile(hash) {
         let { files,doctorAddedFiles } = this.state;
         if(files.indexOf(hash) > -1 || doctorAddedFiles.indexOf(hash)>-1){
-            let path=`https://${hash[2]}.ipfs.w3s.link
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            `
+            let path=`https://${hash[2]}.ipfs.w3s.link`
             console.log(path);
             window.open(path);
         }
@@ -294,7 +265,7 @@ class DisplayPatient extends Component {
                             <h6>Add consultation</h6>
                             <div>
                             <form onSubmit={this.addConsultation}>
-                                <table>
+                                <table style={{width : '-webkit-fill-available'}}>
                                     
                                     <tr>
                                         <td><input type='text' id='consultation' placeholder='consultation'/></td>
