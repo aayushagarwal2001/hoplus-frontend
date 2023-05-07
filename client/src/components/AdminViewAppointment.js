@@ -1,105 +1,111 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Modal, Button } from "react-bootstrap";
-
-const AdminViewAppointment = () => {
-
-    const data = [
-        {
-            srNo: 1,
-            patientName: "Aman Gupta",
-            doctorName: "Atul Kumar",
-            patientContact: "9823845687",
-            fees: "400",
-            action: "view",
-        },
-        {
-            srNo: 2,
-            patientName: "Sunil Singh",
-            doctorName: "Atul Kumar",
-            patientContact: "9636268699",
-            fees: "400",
-            action: "view",
-        },
-        {
-            srNo: 3,
-            patientName: "Jay Kumar",
-            doctorName: "Atul Kumar",
-            patientContact: "9829240677",
-            fees: "400",
-            action: "view",
-        },
-        {
-            srNo: 4,
-            patientName: "Aman Gupta",
-            doctorName: "Kaushal Kishore",
-            patientContact: "9823845687",
-            fees: "400",
-            action: "view"
-        },
-        // {
-        //     srNo: 5,
-        //     patientName: "Aman Gupta",
-        //     doctorName: "Amit Kumar",
-        //     patientContact: "9823845687",
-        //     fees: "400",
-        //     action: "view"
-        // },
-        // {
-        //     srNo: 6,
-        //     patientName: "Sunil Singh",
-        //     doctorName: "Atul Kumar",
-        //     patientContact: "9636268699",
-        //     fees: "400",
-        //     action: "view",
-        // },
-        // {
-        //     srNo: 7,
-        //     patientName: "Jay Kumar",
-        //     doctorName: "Atul Kumar",
-        //     patientContact: "9829240677",
-        //     fees: "400",
-        //     action: "view",
-        // },
-        // {
-        //     srNo: 8,
-        //     patientName: "Aman Gupta",
-        //     doctorName: "Amit Kumar",
-        //     patientContact: "9823845687",
-        //     fees: "400",
-        //     action: "view"
-        // },
-        // {
-        //     srNo: 9,
-        //     patientName: "Aman Gupta",
-        //     doctorName: "Amit Kumar",
-        //     patientContact: "9823845687",
-        //     fees: "400",
-        //     action: "view"
-        // },
-        // {
-        //     srNo: 10,
-        //     patientName: "Aman Gupta",
-        //     doctorName: "Atul Kumar",
-        //     patientContact: "9823845687",
-        //     fees: "400",
-        //     action: "view"
-        // },
-        // {
-        //     srNo: 11,
-        //     patientName: "Aman Gupta",
-        //     doctorName: "Kaushal Kishore",
-        //     patientContact: "9823845687",
-        //     fees: "400",
-        //     action: "view"
-        // },
-    ]
-
+import axios from 'axios';
+const AdminViewAppointment = (props) => {
+    const [data,setData]= useState({appointment:[]})
+    useEffect(() => async function(){
+            var apiData =  await axios.get('http://localhost:4040/api/apppointment/viewAppointment',{headers: { Authorization: `Bearer ${props.user.token}`}});
+            setData({appointment : apiData.data})
+    },[])
+    
+    // data = [
+    //     {
+    //         srNo: 1,
+    //         patientName: "Aman Gupta",
+    //         doctorName: "Atul Kumar",
+    //         patientContact: "9823845687",
+    //         fees: "400",
+    //         action: "view",
+    //     },
+    //     {
+    //         srNo: 2,
+    //         patientName: "Sunil Singh",
+    //         doctorName: "Atul Kumar",
+    //         patientContact: "9636268699",
+    //         fees: "400",
+    //         action: "view",
+    //     },
+    //     {
+    //         srNo: 3,
+    //         patientName: "Jay Kumar",
+    //         doctorName: "Atul Kumar",
+    //         patientContact: "9829240677",
+    //         fees: "400",
+    //         action: "view",
+    //     },
+    //     {
+    //         srNo: 4,
+    //         patientName: "Aman Gupta",
+    //         doctorName: "Kaushal Kishore",
+    //         patientContact: "9823845687",
+    //         fees: "400",
+    //         action: "view"
+    //     },
+    //     // {
+    //     //     srNo: 5,
+    //     //     patientName: "Aman Gupta",
+    //     //     doctorName: "Amit Kumar",
+    //     //     patientContact: "9823845687",
+    //     //     fees: "400",
+    //     //     action: "view"
+    //     // },
+    //     // {
+    //     //     srNo: 6,
+    //     //     patientName: "Sunil Singh",
+    //     //     doctorName: "Atul Kumar",
+    //     //     patientContact: "9636268699",
+    //     //     fees: "400",
+    //     //     action: "view",
+    //     // },
+    //     // {
+    //     //     srNo: 7,
+    //     //     patientName: "Jay Kumar",
+    //     //     doctorName: "Atul Kumar",
+    //     //     patientContact: "9829240677",
+    //     //     fees: "400",
+    //     //     action: "view",
+    //     // },
+    //     // {
+    //     //     srNo: 8,
+    //     //     patientName: "Aman Gupta",
+    //     //     doctorName: "Amit Kumar",
+    //     //     patientContact: "9823845687",
+    //     //     fees: "400",
+    //     //     action: "view"
+    //     // },
+    //     // {
+    //     //     srNo: 9,
+    //     //     patientName: "Aman Gupta",
+    //     //     doctorName: "Amit Kumar",
+    //     //     patientContact: "9823845687",
+    //     //     fees: "400",
+    //     //     action: "view"
+    //     // },
+    //     // {
+    //     //     srNo: 10,
+    //     //     patientName: "Aman Gupta",
+    //     //     doctorName: "Atul Kumar",
+    //     //     patientContact: "9823845687",
+    //     //     fees: "400",
+    //     //     action: "view"
+    //     // },
+    //     // {
+    //     //     srNo: 11,
+    //     //     patientName: "Aman Gupta",
+    //     //     doctorName: "Kaushal Kishore",
+    //     //     patientContact: "9823845687",
+    //     //     fees: "400",
+    //     //     action: "view"
+    //     // },
+    // ]
+    console.log(data)
     const [modeldata, setModeldata] = useState({
         srNo: '',
         patientName: '',
         doctorName: '',
         patientContact: '',
         fees: '',
+        otp : '',
         action: ''
     })
 
@@ -108,7 +114,7 @@ const AdminViewAppointment = () => {
     const handleClose = () => setShow(false);
     const handleShow = (val) => {
         setShow(true);
-        setModeldata(val)
+        setModeldata({patientName : val.patientInfo.username,doctorName :val.doctorInfo.username,patientContact :val.patientInfo.mobileNumber,otp:val.appointmentOtp,action:val.action } )
         // alert(setModeldata)
     }
 
@@ -120,24 +126,26 @@ const AdminViewAppointment = () => {
                 <div className='view-appointment-table'>
                     <table>
                         <tr>
-                            <th>Sr No.</th>
                             <th>Patient Name</th>
                             <th>Doctor Name</th>
                             <th>Patient Contact</th>
                             <th>Fees</th>
+                            <th>Date Of Appointment</th>
                             <th>Action</th>
                         </tr>
-                        {data.map((val, key) => {
+                        {data.appointment.map((val, key) => {
+                            if(val.doctorInfo != null){
                             return (
                                 <tr key={key}>
-                                    <td>{val.srNo}</td>
-                                    <td>{val.patientName}</td>
-                                    <td>{val.doctorName}</td>
-                                    <td>{val.patientContact}</td>
-                                    <td>{val.fees}</td>
-                                    <td><button className='btn-viewAppointment' onClick={() => { handleShow(val) }}>{val.action}</button></td>
+                                    <td>{val.patientInfo.username}</td>
+                                    <td>{val.doctorInfo.username}</td>
+                                    <td>{val.patientInfo.mobileNumber}</td>
+                                    <td>400</td>
+                                    <td>{val.appointmentDate}</td>
+                                    <td><button className='btn-viewAppointment' onClick={() => { handleShow(val) }}>view</button></td>
                                 </tr>
                             )
+                            }
                         })}
                     </table>
                 </div>

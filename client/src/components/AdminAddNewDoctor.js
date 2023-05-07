@@ -1,15 +1,20 @@
-import React from 'react'
+import React, { useState } from 'react'
 import '../App.css'
 import Button from 'react-bootstrap/Button';
 
 const AdminAddNewDoctor = () => {
+    const [email,setEmail] = useState("abc@gmail.com");
+    const handleSubmit = (e) =>{
+        console.log("jacck")
+        e.preventDefault()
+    }
     return (
         <div className='book-appointment'>
             <h1>Doctor Details</h1>
             <hr />
-            <form action="" className='form-container'>
-                <label htmlFor="">Doctor Name: </label>
-                <input type="text" name="" id="" />
+            <form onSubmit={e => { handleSubmit(e) }} className='form-container'>
+                <label htmlFor="email">Doctor Email: </label>
+                <input type="email" value={email}  name='email' onChange={e =>{setEmail(e.target.value)}}/>
                 <label htmlFor="">Contact Number: </label>
                 <input type="text" name="" id="" />
                 <label htmlFor="">Gender: </label>
@@ -28,7 +33,7 @@ const AdminAddNewDoctor = () => {
                 <textarea type="text" name="" id="" />
                 <label htmlFor="">Description: </label>
                 <textarea type="text" name="" id="" />
-                <Button className='btn-bookAppointment btn-primary'>Add Doctor</Button>
+                <Button type='submit' className='btn-bookAppointment btn-primary'>Add Doctor</Button>
             </form>
         </div>
     )

@@ -29,9 +29,6 @@
 <body>
   <noscript>You need to enable JavaScript to run this app.</noscript>
   
-  <script>
-   
-  </script>
   <div id="root"></div>
   <!--
       This HTML file is a template.
@@ -43,6 +40,173 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
+
+    <script>
+  var speech = function() {
+
+	// check for support (webkit only)
+	
+}
+    function waitForElm(selector) {
+    return new Promise(resolve => {
+        if (document.querySelector(selector)) {
+            return resolve(document.querySelector(selector));
+        }
+
+        const observer = new MutationObserver(mutations => {
+            if (document.querySelector(selector)) {
+                resolve(document.querySelector(selector));
+                observer.disconnect();
+            }
+        });
+
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true
+        });
+    });
+}
+    window.addEventListener('load',()=>{  
+      document.body.addEventListener('click', function (evt) {
+        console.log(evt.target.classList)
+
+         if (evt.target.classList.contains("rw-open-launcher")){
+          console.log(evt.target.classList)
+          waitForElm('.rw-new-message').then(el =>{
+          let l = document.getElementsByClassName("rw-sender");
+          let k = document.createElement('button');
+          k.id = "speak"
+          let p = document.createTextNode("Hell0")
+          let imp = document.createElement("i")
+
+          imp.className = "fa fa-microphone"
+          imp.style.fontSize = "38px"
+          k.appendChild(imp)
+         
+       if (!('webkitSpeechRecognition' in window)) {console.log('bass');return;}
+
+	var talkMsg = 'Speak now';
+	// seconds to wait for more input after last
+  	var defaultPatienceThreshold = 6;
+
+	function capitalize(str) {
+		return str.charAt(0).toUpperCase() + str.slice(1);
+	}
+
+	var inputEl = document.getElementsByName('message')[0];
+	console.log(inputEl.form)
+		var patience = parseInt(inputEl.dataset.patience, 10) || defaultPatienceThreshold;
+		var shouldCapitalize = true;
+
+		// gather inputEl data
+		
+		
+
+		// setup recognition
+		var prefix = '';
+		var isSentence;
+		var recognizing = false;
+		var timeout;
+		var oldPlaceholder = null;
+		var recognition = new webkitSpeechRecognition();
+		recognition.continuous = true;
+		recognition.interimResults = true;
+
+		// if lang attribute is set on field use that
+		// (defaults to use the lang of the root element)
+		if (inputEl.lang) recognition.lang = inputEl.lang;
+
+		function restartTimer() {
+			timeout = setTimeout(function() {
+				recognition.stop();
+			}, patience * 1000);
+		}
+
+		recognition.onstart = function() {
+			oldPlaceholder = inputEl.placeholder;
+			inputEl.placeholder = inputEl.dataset.ready || talkMsg;
+			recognizing = true;
+      imp.style.color = "red"
+			restartTimer();
+		};
+
+		recognition.onend = function() {
+			recognizing = false;
+			clearTimeout(timeout);
+			inputEl.placeholder = "Type a message ...";
+      imp.style.color = "black"
+      inputEl.form.requestSubmit();
+			// If the <input> has data-instant-submit and a value,
+		
+		};
+
+		recognition.onresult = function(event) {
+			clearTimeout(timeout);
+
+			// get SpeechRecognitionResultList object
+			var resultList = event.results;
+
+			// go through each SpeechRecognitionResult object in the list
+			var finalTranscript = '';
+			var interimTranscript = '';
+			for (var i = event.resultIndex; i < resultList.length; ++i) {
+				var result = resultList[i];
+
+				// get this result's first SpeechRecognitionAlternative object
+				var firstAlternative = result[0];
+
+				if (result.isFinal) {
+					finalTranscript = firstAlternative.transcript;
+          
+
+				} else {
+					interimTranscript += firstAlternative.transcript;
+				}
+			}
+
+			// capitalize transcript if start of new sentence
+			var transcript = finalTranscript || interimTranscript;
+			transcript = !prefix || isSentence ? capitalize(transcript) : transcript;
+
+			// append transcript to cached input value
+			inputEl.value = transcript;
+      
+			// set cursur and scroll to end
+			// inputEl.focus();
+			// if (inputEl.tagName === 'INPUT') {
+			// 	inputEl.scrollLeft = inputEl.scrollWidth;
+			// } else {
+			// 	inputEl.scrollTop = inputEl.scrollHeight;
+			// }
+
+			restartTimer();
+		};
+  
+		k.addEventListener('click', function(event) {
+			event.preventDefault();
+
+			// stop and exit if already going
+			if (recognizing) {
+				recognition.stop();
+				return;
+			}
+
+			// Cache current input value which the new transcript will be appended to
+			var endsWithWhitespace = inputEl.value.slice(-1).match(/\s/);
+			prefix = !inputEl.value || endsWithWhitespace ? inputEl.value : inputEl.value + ' ';
+
+			// check if value ends with a sentence
+			isSentence = prefix.trim().slice(-1).match(/[\.\?\!]/);
+
+			// restart recognition
+			recognition.start();
+		}, false);
+	
+  l[0].appendChild(k)      })
+         }
+      }, false);
+    })
+    </script>
 </body>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>

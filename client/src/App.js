@@ -1,6 +1,6 @@
 import React, { useEffect, useState ,Component, createElement} from 'react'
 import './App.css';
-import { BrowserRouter as Router, Route, Routes ,NavLink,useNavigate} from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes ,NavLink,useNavigate, json} from 'react-router-dom';
 import BookAppointment from './components/BookAppointment';
 import ViewAppointment from './components/ViewAppointment';
 import TestHistory from './components/TestHistory';
@@ -67,7 +67,11 @@ const App = () => {
         `Failed to load web3, accounts, or contract. Check console for details.`,
       );
     }
-  
+      // document.head.removeChild(document.head.firstChild)
+    
+      localStorage.removeItem("chat_session")
+      
+      // k.replace()
       let token = localStorage.getItem("auth-token");
       if(token === null){
       localStorage.setItem("auth-token", "");
@@ -87,24 +91,58 @@ const App = () => {
       
       }
       if(userRes.data.role == 'patient'){
-      let widget = document.createElement("div");
-      widget.setAttribute("data-websocket-url","http://localhost:5050");
-      widget.setAttribute("data-token",token);
-      let authToken = "/set_data{\"token\":"+"\"Bearer "+token+"\"}";
-      console.log(authToken);
-      widget.setAttribute("data-initial-payload",authToken);
-      widget.id = "rasa-chat-widget" 
-      let s = document.createElement("script");
-      s.setAttribute("src","https://unpkg.com/@rasahq/rasa-chat");
-      s.setAttribute("type","application/javascript");
-      document.body.appendChild(widget);
-      document.body.appendChild(s);
+      // let widget = document.createElement("div");
+      // widget.setAttribute("data-websocket-url","http://localhost:5050");
+      // widget.setAttribute("data-token",token);
+      // let authToken = "/set_data{\"token\":"+"\"Bearer "+token+"\"}";
+      // console.log(authToken);
+      // widget.setAttribute("data-initial-payload",authToken);
+      // widget.id = "rasa-chat-widget" 
+      // let s = document.createElement("script");
+      // s.setAttribute("src","https://unpkg.com/@rasahq/rasa-chat");
+      // s.setAttribute("type","application/javascript");
+      // document.body.appendChild(widget);
+      // document.body.appendChild(s);
+      let e = document.createElement("script"),
+      t = document.head || document.getElementsByTagName("head")[0];
+      e.src = "https://cdn.jsdelivr.net/npm/rasa-webchat@1.x.x/lib/index.js"
+      e.async = false
+      e.id = "pop"
+      e.onload = () => {
+            window.WebChat.default(
+              {
+                customData: { language: "en" },
+                socketUrl: "http://localhost:5050",
+                initPayload	: '/set_data{"token":'+'"Bearer '+token+'"}',
+                storage: 'session'
+
+                // add other props here
+              },
+              null
+            );
+          }
+      t.insertBefore(e,t.firstChild)   
+    // (e.src =
+    //   "https://cdn.jsdelivr.net/npm/rasa-webchat@1.x.x/lib/index.js"),
+    //   // Replace 1.x.x with the version that you want
+    //   (e.async = !0),
+    //   (e.onload = () => {
+    //     window.WebChat.default(
+    //       {
+    //         customData: { language: "en" },
+    //         socketUrl: "https://bf-botfront.development.agents.botfront.cloud",
+    //         // add other props here
+    //       },
+    //       null
+    //     );
+    //   }),
+    //   t.insertBefore(e, t.firstChild);
+
       }
 //       <div id="rasa-chat-widget" data-websocket-url="http://localhost:5050" data-default-open	
 // ="true"  ></div>
 //   <script src="https://unpkg.com/@rasahq/rasa-chat" type="application/javascript"></script>
      
-        
     
       
   },[]);
@@ -183,7 +221,7 @@ const App = () => {
     
     );
   }
-  
+  if(currentUser.user.role != null){
   return (
       <>
       
@@ -196,18 +234,17 @@ const App = () => {
       </Navbar>
       
       
-    
-      <Sidebar>
+      
+      <Sidebar user={currentUser.user}>
         <Routes>
-          <Route path="/" exact element={<BookAppointment />} />
+         
           <Route path="/bmicalculator" exact element={<BMICalculator />} />
-          <Route path="/bookappointment" element={<BookAppointment />} />
-          <Route path="/viewappointment" element={<ViewAppointment />} />
+        
           <Route path="/testhistory" element={<TestHistory />} />
           <Route path="/patientprescription" element={<PatientPrescription />} />
           <Route path="/doctorappointment" element={<DoctorAppointment />} />
           <Route path="/adminaddappointment" element={<AdminAddAppointment />} />
-          <Route path="/adminviewappointment" element={<AdminViewAppointment />} />
+          <Route path="/viewappointment" element={<AdminViewAppointment  user={currentUser}/>} />
           <Route path="/adminaddtimeslot" element={<AdminAddTimeSlot />} />
           <Route path="/adminadddoctorfees" element={<AdminAddDoctorFees />} />
           <Route path="/adminaddnewdoctor" element={<AdminAddNewDoctor />} />
@@ -224,7 +261,7 @@ const App = () => {
     // <ProcessFaceRecognition />
     // <index />
     // <addFacePhoto />
-  );
+  );}
   
 };
 
