@@ -1,51 +1,60 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import '../App.css'
 import Button from 'react-bootstrap/Button';
-
+import axios from 'axios';
 const AdminAddTimeSlot = () => {
     const [startTime,setStartTime] = useState('00:00');
     const [endTime,setEndTime]  = useState('00:00');
-
-    const handleSubmit = (e)=>
-    {    console.log(startTime)
+    const [data,setData]= useState([])
+    const handleSubmit = async (e)=>
+    {     e.preventDefault()
+        console.log(startTime)
         console.log(endTime)
-        e.preventDefault()
+        var token = localStorage.getItem("auth-token");
+        const loginResponse = await axios.post("http://localhost:4040/api/doctor/timeSlot",{startTime : startTime,endTime : endTime},{headers: { Authorization: `Bearer ${token}`}});
+        console.log(loginResponse)  
+       
        
     }
-    const data = [
-        {
-                    srNo: 1,
-                    patientName: "9:00 am",
-                    doctorName: "9:30 am",
-                    patientContact: "9823845687",
-                    fees: "400",
-                    action: "view",
-                },
-                {
-                    srNo: 2,
-                    patientName: "9:45 am",
-                    doctorName: "10:15 am",
-                    patientContact: "9636268699",
-                    fees: "400",
-                    action: "view",
-                },
-                {
-                    srNo: 3,
-                    patientName: "10:25 am",
-                    doctorName: "10:55 am",
-                    patientContact: "9829240677",
-                    fees: "400",
-                    action: "view",
-                },
-                {
-                    srNo: 4,
-                    patientName: "11:00 am",
-                    doctorName: "11:30 am",
-                    patientContact: "9823845687",
-                    fees: "400",
-                    action: "view"
-                },
-    ]
+    useEffect(() => async function(){
+        var token = localStorage.getItem("auth-token");
+        var apiData =  await axios.get('http://localhost:4040/api/doctor/showTimeSlots',{headers: { Authorization: `Bearer ${token}`}});
+        setData(apiData.data)
+},[])
+    // const data = [
+    //     {
+    //                 srNo: 1,
+    //                 patientName: "9:00 am",
+    //                 doctorName: "9:30 am",
+    //                 patientContact: "9823845687",
+    //                 fees: "400",
+    //                 action: "view",
+    //             },
+    //             {
+    //                 srNo: 2,
+    //                 patientName: "9:45 am",
+    //                 doctorName: "10:15 am",
+    //                 patientContact: "9636268699",
+    //                 fees: "400",
+    //                 action: "view",
+    //             },
+    //             {
+    //                 srNo: 3,
+    //                 patientName: "10:25 am",
+    //                 doctorName: "10:55 am",
+    //                 patientContact: "9829240677",
+    //                 fees: "400",
+    //                 action: "view",
+    //             },
+    //             {
+    //                 srNo: 4,
+    //                 patientName: "11:00 am",
+    //                 doctorName: "11:30 am",
+    //                 patientContact: "9823845687",
+    //                 fees: "400",
+    //                 action: "view"
+    //             },
+    // ]
     return (
         <div className='row'>
          <div className='col-7'>   
@@ -78,8 +87,8 @@ const AdminAddTimeSlot = () => {
                             return (
                                 <tr key={key}>
                                     <td style={{padding : "0 15px"}}>{val.srNo}</td>
-                                    <td style={{padding : "0 15px"}}>{val.patientName}</td>
-                                    <td style={{padding : "0 15px"}}>{val.doctorName}</td>
+                                    <td style={{padding : "0 15px"}}>{val.startTime}</td>
+                                    <td style={{padding : "0 15px"}}>{val.endTime}</td>
                                 </tr>
                             )
                         })}

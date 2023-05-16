@@ -29,6 +29,7 @@ class Patient extends Component {
         filesInfo:[],
         showPopup:[],
         doctorId: null,
+        doctorId1:null,
         secret: null,
         visible: false,
         loaded:false,
@@ -112,14 +113,14 @@ class Patient extends Component {
     async grantAccess(){
         
         
-        if(this.state.doctorId){
-            let res = await this.contract.methods.grantAccessToDoctor(this.state.doctorId)
+        if(this.state.doctorId1){
+            let res = await this.contract.methods.grantAccessToDoctor(this.state.doctorId1)
             .send({"from":this.accounts[0]});
             
             if(res) {
                 message.success('access successful');
                 console.log("access successful")
-                this.setState({doctorId:null});
+                this.setState({doctorId1:null});
             }
         }
     }
