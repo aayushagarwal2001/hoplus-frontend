@@ -224,7 +224,7 @@ class Patient extends Component {
                     <h6>Grant Access</h6>
                         <Card bordered={true}>
                             <div style={flexStyle}>
-                            <Input className='emailId' value={this.state.doctorId} onChange={this.onTextChange.bind(this, 'doctorId')} size="small" placeholder="Grant Address"/>
+                            <Input className='emailId' value={this.state.doctorId1} onChange={this.onTextChange.bind(this, 'doctorId1')} size="small" placeholder="Grant Address"/>
                                 <button className='button-12' type="primary" onClick={this.grantAccess.bind(this)} htmlType="submit" >
                                     Grant Access
                                 </button>
