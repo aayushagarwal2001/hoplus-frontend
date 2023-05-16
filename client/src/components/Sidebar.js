@@ -80,8 +80,8 @@ const Sidebar = (props) => {
            //     icon: <FaTh />
            // },
            // {
-           //     path: "/viewappointment",
-           //     name: "View Appointment",
+           //     path: "/adminaddtimeslot",
+           //     name: "Add time slot",
            //     icon: <FaShoppingBag />
            // },
            // {
@@ -105,7 +105,21 @@ const Sidebar = (props) => {
                icon: <FaCommentAlt />
            },
            
-           
+           {
+            path: "/viewappointment",
+            name: "doctor View Appointment",
+            icon: <FaCommentAlt />
+        },
+        {
+            path: "/adminadddoctorfees",
+            name: "Admin Add Doctor Fees",
+            icon: <FaCommentAlt />
+        },
+        {
+                path: "/adminaddtimeslot",
+                name: "Add time slot",
+                icon: <FaShoppingBag />
+            },
            
            
        ]
@@ -161,11 +175,7 @@ const Sidebar = (props) => {
                name: "Admin View Appointment",
                icon: <FaCommentAlt />
            },
-           {
-               path: "/adminadddoctorfees",
-               name: "Admin Add Doctor Fees",
-               icon: <FaCommentAlt />
-           },
+           
            {
                path: "/adminaddnewdoctor",
                name: "Admin Add New Doctor ",

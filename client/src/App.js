@@ -28,6 +28,7 @@ import Button from 'react-bootstrap/Button';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import Widget from 'rasa-webchat';
+import Home from './components/Home';
 import "./App.css";
 import "./components/css/antd.css"
 import 'antd/dist/antd.css';
@@ -239,7 +240,7 @@ const App = () => {
         <Routes>
          
           <Route path="/bmicalculator" exact element={<BMICalculator />} />
-        
+          <Route path="/"  element = {<Home user = {currentUser.user}/>}/>
           <Route path="/testhistory" element={<TestHistory />} />
           <Route path="/patientprescription" element={<PatientPrescription />} />
           <Route path="/doctorappointment" element={<DoctorAppointment />} />

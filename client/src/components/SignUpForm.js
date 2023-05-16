@@ -10,13 +10,15 @@ class SignUpForm extends Component {
       email: "",
       password: "",
       name: "",
+      phoneNumber:"",
+      gender : "male",
       hasAgreed: false
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
-
+  
   handleChange(event) {
     let target = event.target;
     let value = target.type === "checkbox" ? target.checked : target.value;
@@ -40,13 +42,13 @@ class SignUpForm extends Component {
         <form onSubmit={this.handleSubmit} className="formFields">
           <div className="formField">
             <label className="formFieldLabel" htmlFor="name">
-              Full Name
+              userName
             </label>
             <input
               type="text"
               id="name"
               className="formFieldInput"
-              placeholder="Enter your full name"
+              placeholder="Enter your username"
               name="name"
               value={this.state.name}
               onChange={this.handleChange}
@@ -80,7 +82,17 @@ class SignUpForm extends Component {
               onChange={this.handleChange}
             />
           </div>
-
+          <div className="formField">
+          <label className="formFieldLabel" htmlFor="phoneNumber">Contact Number: </label>
+                <input type="text" value={this.state.phoneNumber} className="formFieldInput" name='phoneNumber' onChange={this.handleChange} />
+          </div>   
+          <div className="formField">   
+                <label className="formFieldLabel" htmlFor="gender">Gender: </label>
+                <select className="formFieldInput" onChange={this.handleChange}>
+                    <option style={{color:"black",background:"grey"}} value="male">Male</option>
+                    <option style={{color:"black",background:"grey"}}value="female">Female</option>
+                </select>
+          </div>      
           <div className="formField">
             <label className="formFieldCheckboxLabel">
               <input
