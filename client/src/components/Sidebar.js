@@ -6,7 +6,12 @@ import {
     FaRegChartBar,
     FaCommentAlt,
     FaShoppingBag,
-    FaThList
+    FaHospital,
+    FaHome,
+    FaBriefcaseMedical,
+    FaEye,
+    FaClock,
+    FaMoneyCheckAlt
 } from "react-icons/fa";
 import { NavLink } from 'react-router-dom';
 
@@ -51,16 +56,20 @@ const Sidebar = (props) => {
         //     name: "Doctor Appointment",
         //     icon: <FaCommentAlt />
         // },
-       
+        {
+            path: "/",
+            name: "Home",
+            icon: <FaHome />
+        },
         {
             path: "/patientBlockChainAccess",
             name: "Electronic Health Records",
-            icon: <FaCommentAlt />
+            icon: <FaHospital />
         },
         {
             path: "/viewappointment",
-            name: "Electronic Health Records",
-            icon: <FaCommentAlt />
+            name: "Appointments",
+            icon: <FaEye />
         }
 
     ]
@@ -100,25 +109,30 @@ const Sidebar = (props) => {
            //     icon: <FaCommentAlt />
            // },
            {
+            path: "/",
+            name: "Home",
+            icon: <FaHome />
+        },
+           {
                path: "/doctorBlockChainAccess",
                name: "Electronic Health Records",
-               icon: <FaCommentAlt />
+               icon: <FaHospital />
            },
            
            {
             path: "/viewappointment",
             name: "doctor View Appointment",
-            icon: <FaCommentAlt />
+            icon: <FaEye />
         },
         {
             path: "/adminadddoctorfees",
             name: "Admin Add Doctor Fees",
-            icon: <FaCommentAlt />
+            icon: <FaMoneyCheckAlt />
         },
         {
                 path: "/adminaddtimeslot",
                 name: "Add time slot",
-                icon: <FaShoppingBag />
+                icon: <FaClock/>
             },
            
            
@@ -126,7 +140,6 @@ const Sidebar = (props) => {
    
        }
        if(User.role == "admin"){
-        console.log("amsdkod")
         menuItem = [
            // {
            //     path: "/bmicalculator",
@@ -160,9 +173,14 @@ const Sidebar = (props) => {
            //     icon: <FaCommentAlt />
            // },
            {
+            path: "/",
+            name: "Home",
+            icon: <FaHome />
+        },
+           {
                path: "/adminClinicBlockChainAccess",
                name: "Electronic Health Records",
-               icon: <FaCommentAlt />
+               icon: <FaHospital />
            },
            {
                path: "/adminBlockChainAccess",
@@ -173,13 +191,13 @@ const Sidebar = (props) => {
            {
                path: "/viewappointment",
                name: "Admin View Appointment",
-               icon: <FaCommentAlt />
+               icon: <FaEye />
            },
            
            {
                path: "/adminaddnewdoctor",
                name: "Admin Add New Doctor ",
-               icon: <FaCommentAlt />
+               icon: <FaBriefcaseMedical />
            }
        ]
    

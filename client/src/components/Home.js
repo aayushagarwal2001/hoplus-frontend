@@ -1,7 +1,60 @@
 import React, { Component } from "react";
 import "./css/Home.css";
 import ImageSlider from "./ImageSlider";
+import axios from "axios";
+import {
+    Chart as ChartJS,
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    Title,
+    Tooltip,
+    Legend,
+  } from 'chart.js';
+  import { Line } from 'react-chartjs-2';
 
+  
+  ChartJS.register(
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    Title,
+    Tooltip,
+    Legend
+  );
+  
+ const options = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top',
+      },
+      title: {
+        display: true,
+        text: 'Chart.js Line Chart',
+      },
+    },
+  };
+  
+  const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July','August','September','October','November','December'];
+  
+
+const Card = ({ color, name, number }) => (
+    <div
+      style={{
+        backgroundColor: color,
+        padding: '10px',
+        margin: '10px',
+        borderRadius: '5px',
+        color: 'white',
+      }}
+    >
+      <h3>{name}</h3>
+      <h4 style={{color:"black"}}>{number}</h4>
+    </div>
+  );
 class Home extends Component {
     state = {
         //searched: "",
@@ -11,8 +64,46 @@ class Home extends Component {
         usaInput: 0,
         drugDetails: "",
         noResult: 0,
+        loading : true,
+        
     };
+   
+    data = {
+        labels,
+        datasets: [
+        ],
+      };
+      cardsData = [
+        
+      ];
+    componentDidMount() {
+        var monthlyData
+        const fetchData = () => {
+            this.setState({ loading: true });
+            var token = localStorage.getItem("auth-token");
+            axios.get("http://localhost:4040/api/apppointment/adminDashboard",{headers: { Authorization: `Bearer ${token}`}}).then((data)=>{
+            this.setState({
+            loading: false})
+            this.cardsData= [{ color: 'rgb(255, 150, 150)', name: 'Doctors', number: data.data.doctor },
+            { color: 'rgb(150, 150, 255)', name: 'Patient', number:data.data.patients },
+            { color: 'rgb(150, 255, 150)', name: 'Appointments', number: data.data.appCount },
+            { color: 'rgb(200, 200, 100)', name: 'Pending', number: data.data.pending },
+            { color: 'rgb(200, 150, 255)', name: 'Completed', number: data.data.appComp },]
+            this.data.datasets.push({
+                label: 'Monthly Appointments',
+                data : data.data.appointmentMonthly,
+                borderColor: 'rgb(255, 99, 132)',
+                backgroundColor: 'rgba(255, 99, 132, 0.5)',
+              })
+            })
+            
+        }
+        fetchData()
+        
+        
+     }
     user = this.props.user;
+    
     handleChange = (e) => {
         return this.setState({ val: e.target.value, drugDetails: "" });
     };
@@ -232,6 +323,26 @@ class Home extends Component {
         
       </div>
   
+    }
+    if(this.props.user.role === "admin" && !this.state.loading)
+    {
+        return (
+            <div>
+              <h2>Admin is logged in</h2>
+              <hr/>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '10px' }}>
+                {this.cardsData.map((card, index) => (
+                  <Card
+                    key={index}
+                    color={card.color}
+                    name={card.name}
+                    number={card.number}
+                  />
+                ))}
+              </div>
+              <Line options={options} data={this.data} />;
+            </div>
+          );
     }
 
    

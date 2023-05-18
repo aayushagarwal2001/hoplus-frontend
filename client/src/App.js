@@ -27,7 +27,6 @@ import axios from 'axios';
 import Button from 'react-bootstrap/Button';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import Widget from 'rasa-webchat';
 import Home from './components/Home';
 import "./App.css";
 import "./components/css/antd.css"
@@ -115,8 +114,8 @@ const App = () => {
                 customData: { language: "en" },
                 socketUrl: "http://localhost:5050",
                 initPayload	: '/set_data{"token":'+'"Bearer '+token+'"}',
-                storage: 'session'
-
+                storage: 'session',
+                title : 'Clinic help'
                 // add other props here
               },
               null
